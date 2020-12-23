@@ -14,3 +14,5 @@ def get_divisors(n, flag):
                     divisors.append(int(-n / i))
                 divisors.append(-i)
         i = i + 1
+
+    return divisors

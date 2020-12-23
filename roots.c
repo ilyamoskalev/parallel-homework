@@ -9,10 +9,10 @@ __kernel void roots(__global float *t, __global float *s, __global const int *ko
         int degre = deg[0]-1;
         for (int j = degre; j >= 0; j--){
             double x = (double) int_t / (double) int_s;
-            buf += (pow((double) x, (double) j)*koeffs[degre-j]);
+            buf += (pow((float) x, (float) j)*koeffs[degre-j]);
         };
     
-        if(fabs(buf-0.0) < 0.00001){
+        if(fabs((float)buf-0.0f) < 0.00001){
             res_t[i] = int_t;
             res_s[i] = int_s;
         }  

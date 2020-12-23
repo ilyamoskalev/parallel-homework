@@ -111,14 +111,18 @@ def solve(context, coefficients, program_divisors, program_roots, profile=False,
             event = program_roots.roots(queue, [workitems_len], None, t.data, s.data, kf.data, deg.data, res_t.data,
                                         res_s.data, cl_iter_param.data)
             event.wait()
-            elapsed = 1e-9 * (event.profile.end - event.profile.start)
+            elapsed = str(1e-9 * (event.profile.end - event.profile.start))
             statistics_file.write(f"{workitems_len} {elapsed}\n")
         statistics_file.close()
     else:
         iter_param = np.array([1])
         cl_iter_param = clar.to_device(queue, iter_param.astype(np.int32))
-        program_roots.roots(queue, [1], None, t.data, s.data, kf.data, deg.data, res_t.data, res_s.data,
-                            cl_iter_param.data)
+        event = program_roots.roots(queue, [1], None, t.data, s.data, kf.data, deg.data, res_t.data, res_s.data,
+                                    cl_iter_param.data)
+        event.wait()
+        elapsed = str(1e-9 * (event.profile.end - event.profile.start))
+        statistics_file = open('examples/stat.txt', 'wt')
+        statistics_file.write(f"123 {elapsed}")
 
     roots = list()
     for t, s in zip(res_t, res_s):
